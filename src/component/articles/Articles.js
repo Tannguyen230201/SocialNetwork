@@ -19,14 +19,14 @@ const Articles = () => {
       tagList: [tagList],
     },
   };
-  const postList = () => {
-    dispatch(postArticlesAPI(post));
-    load();
+  const postList = async () => {
+   await dispatch(postArticlesAPI(post));
+   await dispatch(getComment());
   };
   const load = () => {
     setTimeout(() => {
       dispatch(getComment());
-    }, 5000);
+    }, 500);
   };
   return (
     <div>
