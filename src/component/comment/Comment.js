@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getComment } from "./CommentSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Comment = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,10 @@ const Comment = () => {
   // const { data, error, isSuccess, isLoading, message } = dataAll;
   const isLoading = useSelector((state) => state.comment.isLoading);
   const message = useSelector((state) => state.comment.message)
-
+  const error = useSelector((state) => state.comment.error)
+  useEffect(()=>{
+    dispatch(getComment())
+  },[])
   const getAll = () => {
     dispatch(
       getComment(user)
@@ -46,11 +49,11 @@ const Comment = () => {
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          // dataAll.map((item, index) => {
-          //   return <li key={index}>{item.title}</li>;
-          // })
-          message &&<div>{message}</div>
+          dataAll.map((item, index) => {
+            return <li key={index}>{item.title}</li>;
+          })
         )}
+        {error && <span>Có lỗi xảy ra</span> }
       </div>
     </div>
   );

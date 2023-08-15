@@ -3,26 +3,28 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import getArticlesApi from "./../../services/UserService";
 
-export const getComment = createAsyncThunk("getComment", async (user) => {
+export const getComment = createAsyncThunk("getComment", async (user,{rejectWithValue}) => {
   try {
-    const response = await axios.put(
-      "https://aspnetcorerealworld.okami101.io/api/user",
-      user,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMTUiLCJuYW1lIjoidGFubmd1eWVuIiwiZW1haWwiOiJ0YW5uZ3V5ZW5AZ21haWwuY29tIiwibmJmIjoxNjkyMDAxMjg5LCJleHAiOjE2OTI2MDYwODksImlhdCI6MTY5MjAwMTI4OSwiaXNzIjoiQ29uZHVpdCIsImF1ZCI6IkNvbmR1aXQifQ.Z3bIHozxaT8-bnaTgwGrpi6II-HbFZxxoKja_IWEAJU",
-        },
-      }
+    const response = await axios.get(
+      "https://aspnetcorerealworld.okami101.io/api/articles?limit=20&offset=0",
+      // "https://aspnetcorerealworld.okami101.io/api/user",
+      // user,
+      // {
+      //   headers: {
+      //     accept: "application/json",
+      //     Authorization:
+      //       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMTUiLCJuYW1lIjoidGFubmd1eWVuIiwiZW1haWwiOiJ0YW5uZ3V5ZW5AZ21haWwuY29tIiwibmJmIjoxNjkyMDAxMjg5LCJleHAiOjE2OTI2MDYwODksImlhdCI6MTY5MjAwMTI4OSwiaXNzIjoiQ29uZHVpdCIsImF1ZCI6IkNvbmR1aXQifQ.Z3bIHozxaT8-bnaTgwGrpi6II-HbFZxxoKja_IWEAJU",
+      //   },
+      // }
     );
-    return { ...response.data.user };
+    return [...response.data.articles];
   } catch (err) {
-    return err.message;
+    // return err.message;
+    rejectWithValue(err.response.data.articles)
   }
 });
 const initialState = {
-  // data: [],
+  data: [],
   isLoading: false,
   isSuccess: false,
   message: "",
@@ -42,6 +44,7 @@ export const commentSlice = createSlice({
       state.isLoading = false;
       console.log("success:",{state,action})
       state.isSuccess = true;
+      state.data = action.payload;
       state.message = "Successfully";
     });
     builder.addCase(getComment.rejected, (state,action) => {
