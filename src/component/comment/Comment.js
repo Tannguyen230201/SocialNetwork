@@ -13,22 +13,13 @@ const Comment = () => {
   const isLoading = useSelector((state) => state.comment.isLoading);
   const message = useSelector((state) => state.comment.message)
   const error = useSelector((state) => state.comment.error)
-  useEffect(()=>{
-    dispatch(getComment())
-  },[])
+
   const getAll = () => {
     dispatch(
-      getComment(user)
+      getComment()
     );
   };
-  const user ={
-      "user": {
-        "email": email,
-        "username": username,
-        "bio": bio,
-        "image": image,
-      }
-  }
+
   return (
     <div>
       Comment

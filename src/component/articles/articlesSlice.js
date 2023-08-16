@@ -15,7 +15,7 @@ export const postArticlesAPI = createAsyncThunk(
           headers: {
             accept: "application/json",
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDlhNzhjOWU1YmZhMDAwYjZiNDM2ZCIsInVzZXJuYW1lIjoidGFubmd1eWVuIiwiYWRtaW4iOmZhbHNlLCJleHAiOjE2OTczMzcxMjQsImlhdCI6MTY5MjE1MzEyNH0.p9KlWqyFXsT5-JOJ3n7JayXt3RCznFctv12Xrk-zFho",
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDlhNzhjOWU1YmZhMDAwYjZiNDM2ZCIsInVzZXJuYW1lIjoidGFubmd1eWVuIiwiYWRtaW4iOmZhbHNlLCJleHAiOjE2OTczODI1NTEsImlhdCI6MTY5MjE5ODU1MX0.Sc9Du_NtRtR88T4kj3_I4vxaQjTIcbJ9w7JR6srel-I",
           },
         }
       );
