@@ -20,13 +20,13 @@ const Articles = () => {
     },
   };
   const postList = async () => {
-   await dispatch(postArticlesAPI(post));
-   await dispatch(getComment());
+    await dispatch(postArticlesAPI(post));
+    await dispatch(getComment());
   };
   const load = () => {
-    setTimeout(() => {
+    // setTimeout(() => {
       dispatch(getComment());
-    }, 500);
+    // }, 500);
   };
   return (
     <div>

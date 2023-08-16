@@ -6,7 +6,8 @@ import getArticlesApi from "./../../services/UserService";
 export const getComment = createAsyncThunk("getComment", async (user,{rejectWithValue}) => {
   try {
     const response = await axios.get(
-      "https://aspnetcorerealworld.okami101.io/api/articles?limit=20&offset=0",
+      "https://node-express-conduit.appspot.com/api/articles?limit=20&offset=0",
+      // "https://jsonplaceholder.typicode.com/photos"
       // "https://aspnetcorerealworld.okami101.io/api/user",
       // user,
       // {
@@ -50,6 +51,7 @@ export const commentSlice = createSlice({
     builder.addCase(getComment.rejected, (state,action) => {
       console.log("rejected:",{state,action})
       state.data = [];
+      // state.isLoading = false,
       state.error = true;
       state.message = "Error";
     });
