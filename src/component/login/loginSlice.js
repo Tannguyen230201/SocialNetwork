@@ -32,14 +32,14 @@ const Login = createSlice({
     builder.addCase(LoginAPI.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
-      state.isError = false;
+      state.isError = true
     //   state.token = action.payload.token
     });
     builder.addCase(LoginAPI.rejected, (state, action) => {
       state.isLoading = false;
     //   state.data = action.error.message;
-      state.data = []
-      state.isError = true;
+      state.data = action.error.message;
+      state.isError = false;
     });
   },
 });

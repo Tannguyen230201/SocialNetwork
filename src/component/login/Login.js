@@ -12,13 +12,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const isLoading = useSelector((state) => state.Login.isLoading);
+  const message = useSelector((state) => state.Login.message);
   // const token = useSelector((state) => state.Login.data.token);
   const error = useSelector((state) => state.Login.isError);
   // localStorage.setItem("token", token);
   const navigation = useNavigate();
-  const handleLogin = () => {
-    dispatch(LoginAPI(user));
-    return
+  const handleLogin = async() => {
+    await dispatch(LoginAPI(user));
+    await error&&(navigation("/home"))
   };
   const user = {
     "user": {
@@ -35,6 +36,7 @@ const Login = () => {
           marginTop: "30px",
         }}
       >
+     
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label
             style={{ fontSize: "35px", fontWeight: "700", color: "#0d6efd" }}
@@ -61,10 +63,10 @@ const Login = () => {
           onClick={handleLogin}
         >
           {isLoading ? "...Loading" : ""} Login
-          {error ? alert("Tài khoản mật khẩu sai") : (navigation("/home"))}
         </Button>
         <Form.Label>
-          Not a member ? <Link to="/signup">Signup now</Link>
+          Not a member ? <Link to="/signup">Signup now</Link>   {
+        }
         </Form.Label>
         <ToastContainer />
       </Container>
