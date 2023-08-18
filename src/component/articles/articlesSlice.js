@@ -1,54 +1,45 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { getComment } from "../comment/CommentSlice";
 
-export const postArticlesAPI = createAsyncThunk(
-  "PostAPI",
-  async (posts, { rejectWithValue }) => {
-    try {
-    //   const dispatch = useDispatch();
-      const response = await axios.post(
-        "https://node-express-conduit.appspot.com/api/articles",
-        posts,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDlhNzhjOWU1YmZhMDAwYjZiNDM2ZCIsInVzZXJuYW1lIjoidGFubmd1eWVuIiwiYWRtaW4iOmZhbHNlLCJleHAiOjE2OTczODI1NTEsImlhdCI6MTY5MjE5ODU1MX0.Sc9Du_NtRtR88T4kj3_I4vxaQjTIcbJ9w7JR6srel-I",
-          },
-        }
-      );
-    //   dispatch(getComment());
-      return {...response.data.article};
-    } catch (err) {
-      return err.message;
-    //   rejectWithValue(err.response.data.articles);
-    }
+export const ArticlesAPI = createAsyncThunk(
+  "GetArticles",
+  async () => {
+    const response = await axios.get(
+      `https://node-express-conduit.appspot.com/api/articles?limit=20&offset=0`,
+    );
+    return [...response.data.articles];
   }
 );
 
-export const Articles = createSlice({
-  name: "postArticles",
-  initialState: {
-    data: [],
-    isLoading: false,
-    message:false
-  },
+const initialState = {
+  data: [],
+  isLoading: false,
+  isSuccess: false,
+  message: "",
+  error: false,
+};
+export const articlesSlice = createSlice({
+  name: "articles",
+  initialState,
   extraReducers: (builder) => {
-    builder.addCase(postArticlesAPI.pending, (state) => {
+    builder.addCase(ArticlesAPI.pending, (state) => {
       state.isLoading = true;
-      state.message = false
+      console.log("pending...")
+      state.isSuccess = false;
+      state.message = "pending...";
     });
-    builder.addCase(postArticlesAPI.fulfilled, (state, action) => {
+    builder.addCase(ArticlesAPI.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isSuccess = true;
       state.data = action.payload;
-      state.message = true
+      state.message = "Successfully";
     });
-    builder.addCase(postArticlesAPI.rejected, (state, action) => {
-      state.isLoading = false;
+    builder.addCase(ArticlesAPI.rejected, (state,action) => {
       state.data = [];
+      state.error = true;
+      state.message = "Error";
     });
   },
 });
-export default Articles.reducer;
+export default articlesSlice.reducer;

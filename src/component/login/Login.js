@@ -15,18 +15,19 @@ const Login = () => {
   const message = useSelector((state) => state.Login.message);
   // const token = useSelector((state) => state.Login.data.token);
   const error = useSelector((state) => state.Login.isError);
-  // localStorage.setItem("token", token);
-  const navigation = useNavigate();
-  const handleLogin = async() => {
-    await dispatch(LoginAPI(user));
-    await error&&(navigation("/home"))
-  };
+  const success = useSelector((state) => state.Login.isSuccess);
   const user = {
-    "user": {
-      "email": email,
-      "password": password,
+    user: {
+      email: email,
+      password: password,
     },
   };
+  const navigation = useNavigate();
+  const handleLogin = async () => {
+    await dispatch(LoginAPI(user))
+    navigation("/home")
+  };
+
   return (
       <Container
         style={{
@@ -36,7 +37,6 @@ const Login = () => {
           marginTop: "30px",
         }}
       >
-     
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label
             style={{ fontSize: "35px", fontWeight: "700", color: "#0d6efd" }}
@@ -46,7 +46,7 @@ const Login = () => {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
         </Form.Group>
 
@@ -54,7 +54,7 @@ const Login = () => {
           <Form.Control
             type="password"
             placeholder="Password"
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
         <Button
@@ -65,8 +65,7 @@ const Login = () => {
           {isLoading ? "...Loading" : ""} Login
         </Button>
         <Form.Label>
-          Not a member ? <Link to="/signup">Signup now</Link>   {
-        }
+          Not a member ? <Link to="/signup">Signup now</Link> 
         </Form.Label>
         <ToastContainer />
       </Container>

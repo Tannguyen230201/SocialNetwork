@@ -1,20 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-export const LoginAPI = createAsyncThunk(
-  "loginAPI",
-  async (user) => {
-    // try {
-      const response = await axios.post(
-        "https://node-express-conduit.appspot.com/api/users/login",
-        user
-      );
-      return response.data.user
-    // } catch (err) {
-    //     rejectWithValue(err.response.data.user)
-    // }
-  }
-);
+export const LoginAPI = createAsyncThunk("loginAPI", async (user) => {
+  const response = await axios.post(
+    "https://node-express-conduit.appspot.com/api/users/login",
+    user
+  );
+  // try {
+    return response.data.user;
+  //   navigate("/home")
+  // } catch (err) {
+  //     console.log(err.response.data.user)
+  // }
+});
 
 const Login = createSlice({
   name: "Login",
@@ -22,7 +19,8 @@ const Login = createSlice({
     data: [],
     isLoading: false,
     isError: false,
-    // token: null
+    isSuccess: false,
+    token:''
   },
   extraReducers: (builder) => {
     builder.addCase(LoginAPI.pending, (state) => {
@@ -32,14 +30,16 @@ const Login = createSlice({
     builder.addCase(LoginAPI.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
-      state.isError = true
-    //   state.token = action.payload.token
+      state.isError = false;
+      state.isSuccess = true;
+      state.token = action.payload.token;
+      localStorage.setItem("token",action.payload.token)
+      localStorage.setItem("user",JSON.stringify(action.payload))
     });
     builder.addCase(LoginAPI.rejected, (state, action) => {
       state.isLoading = false;
-    //   state.data = action.error.message;
       state.data = action.error.message;
-      state.isError = false;
+      state.isError = true;
     });
   },
 });
