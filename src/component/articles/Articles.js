@@ -53,7 +53,7 @@ const GetArticles = () => {
             </div>
             <div className="row-12 pb-2">
               {/* <GetComments slug={item.slug}/> */}
-              <Comment/>
+              <Comment slug="3"/>
             </div>
           </div>
         );

@@ -1,37 +1,33 @@
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const CommentAPI = createAsyncThunk("getComment", async () => {
+export const CommentAPI = createAsyncThunk("commetAPI", async (slug) => {
   const response = await axios.get(
-    `https://node-express-conduit.appspot.com/api/articles/121-e1110530-3d6e-11ee-86eb-8925aa206720`
+    `https://node-express-conduit.appspot.com/api/articles/${slug}/comments`
+    // "https://node-express-conduit.appspot.com/api/articles/quanh-a2c28480-3d7c-11ee-86eb-8925aa206720/comments"
   );
-  return response.data.article;
+  return [...response.data.comments];
 });
 
-const initialState = {
-  data: [],
-  isLoading: false,
-  isSuccess: false,
-  error: false,
-};
-export const getComment = createSlice({
+const CommentSlice = createSlice({
   name: "comment",
-  initialState,
+  initialState: {
+    data: [],
+    loading: false,
+  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(CommentAPI.pending, (state) => {
-      state.isLoading = true;
-      state.isSuccess = false;
+      state.loading = true;
     });
     builder.addCase(CommentAPI.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
       state.data = action.payload;
+      state.loading = true;
     });
     builder.addCase(CommentAPI.rejected, (state, action) => {
+      // state.loading = true;
       state.data = [];
-      state.error = true;
     });
   },
 });
-export default getComment.reducer;
+export default CommentSlice.reducer;
